@@ -9,11 +9,11 @@ class ProcesAbs
 {
 public:
 
-    virtual void tipProces() = 0;
+    virtual void tipProces() = 0;  //functie virtuala pura
 
 };
 
-class Proces:public ProcesAbs
+class Proces :public ProcesAbs
 {
 protected:
     int nrProces;
@@ -22,7 +22,7 @@ protected:
     static int An;
 
 public:
-    
+
     //constructor de initializare
     Proces()
     {
@@ -124,7 +124,7 @@ public:
     {
         Proces::An = an;
     }
-    
+
     static int getAn()
     {
         return An;
@@ -135,9 +135,10 @@ public:
         cout << "Acesta este un proces normal" << endl;
     }
 };
+
 int Proces::An = 2022;
 
-class Proces_civil: public Proces
+class Proces_civil : public Proces
 {
     double dauneMorale;
     double dauneMateriale;
@@ -147,7 +148,7 @@ class Proces_civil: public Proces
 public:
 
     //constructor de initializare
-    Proces_civil():Proces()
+    Proces_civil() :Proces()
     {
         dauneMorale = 0;
         dauneMateriale = 0;
@@ -285,13 +286,18 @@ public:
 
     double taxaTimbru()
     {
-        double taxa = (10 * this->dauneMorale) / 100  + (10 * dauneMateriale) / 100;
+        double taxa = (10 * this->dauneMorale) / 100 + (10 * dauneMateriale) / 100;
         return taxa;
     }
 
     void tipProces()
     {
         cout << "Acesta este un proces civil" << endl;
+    }
+
+    void setStadiu(bool stadiu)
+    {
+        this->stadiu = stadiu;
     }
 };
 
@@ -302,7 +308,7 @@ class Proces_penal :public Proces
     bool stadiu;
 
 public:
-    
+
     //constructor de initializare
     Proces_penal() :Proces()
     {
@@ -361,7 +367,7 @@ public:
 
         return *this;
     }
-        
+
     //operator <<
     friend ostream& operator<<(ostream& out, const Proces_penal& pp)
     {
@@ -409,7 +415,12 @@ public:
     {
         cout << "Acesta este un proces penal" << endl;
     }
-    
+
+    void setStadiu(bool stadiu)
+    {
+        this->stadiu = stadiu;
+    }
+
 };
 
 
@@ -421,7 +432,7 @@ int main()
     Proces p3 = p2;
     Proces p4;
     p4 = p2;
-    
+
     //verificare operator << pentru proces
     cout << p1 << endl;
     cout << p2 << endl;
@@ -429,6 +440,7 @@ int main()
     cout << p4 << endl;
 
     //pentru verificare operator >>
+
     /*Proces p5;
     cin >> p5;
     cout << p5 << endl;*/
@@ -441,16 +453,15 @@ int main()
     Proces_civil pc5;
 
     //afisarea procesului civil cu cea mai mare taxa de trimbru
-    Proces_civil pcmax=pc1;  //verificare operator =  pt proces_civil
+    Proces_civil pcmax = pc1;  //verificare operator =  pt proces_civil
     Proces_civil vector[] = { pc1,pc2,pc3,pc4,pc5 };
-    
+
     for (int i = 0; i < 5; i++)
         if (pcmax.taxaTimbru() < vector[i].taxaTimbru())
             pcmax = vector[i];
-    
-    cout << "Procesul civil cu cea mai mare taxa de trimbru este: " << endl;
-    cout << pcmax << endl;
-    
+
+    cout << "Procesul civil cu cea mai mare taxa de trimbru este: " << pcmax << endl;
+
     //verificare operator << pt proces_civil
     cout << pc1 << endl;
     cout << pc2 << endl;
@@ -458,7 +469,7 @@ int main()
     cout << pc4 << endl;
 
     //verificare operator >> pt proces_civil
-    /*Proces_civil pc;
+   /* Proces_civil pc;
     cin >> pc;
     cout <<pc << endl;*/
 
@@ -466,10 +477,10 @@ int main()
     //verificare constructori si operator = pt proces_penal
     Proces_penal pp1;
     Proces_penal pp2(33, "Ivana Florin", "Vlad Roland", 26);
-    Proces_penal pp3=pp2;
+    Proces_penal pp3 = pp2;
     Proces_penal pp4;
     pp4 = pp2;
-    
+
 
     //verificare operator << pt proces_penal
     cout << pp1 << endl;
@@ -486,20 +497,67 @@ int main()
     cout << pc2.taxaTimbru() << endl;
 
     //verificare functie static pt proces_penal
-    cout << pp2.getAn() << endl;
-    
+    /*cout << pp2.getAn() << endl;
+    pp2.setAn(2019);
+    cout << pp2.getAn() << endl;*/
 
-    
+
+
+
+
+
     //up-casting
-    /*Proces* pointerProces = &pc2;
+    Proces* pointerProces = &pc2;
+    cout << *pointerProces;
     pointerProces->tipProces();
-    cout<<pointerProces->getReclamant();*/    //verificare getter reclamant
-    
+    cout << endl;
+
+
 
     //down-casting
-    /*Proces_penal* pointerPenal = (Proces_penal*)(&p2);
-    cout<< pointerPenal->getReclamant();
-    cout << pointerPenal->getDovezi();*/     //verificare getter dovezi
+    Proces_penal* pointerPenal = (Proces_penal*)(&p2);
+    cout << p2;
+    p2.tipProces();
+    cout << endl;
+    cout << *pointerPenal;
+    pointerPenal->tipProces();
+
+    /*cout << "stadiu:";
+    pc1.setStadiu(1);
+    cout << pc1;*/
+
+    //cout << pointerPenal->getDovezi();   //verificare getter dovezi
+
+
+    //cout << pc3.getNrProces();
+
+    int n;
+    cin >> n;
+    Proces* v = new Proces[n];
+    for (int i = 0; i < n; i++) {
+        cin >> v[i];
+    }
+    for (int i = 0; i < n; i++) {
+        cout << v[i];
+    }
+    int m;
+    cin >> m;
+    Proces_civil* w = new Proces_civil[m];
+    for (int i = 0; i < n; i++) {
+        cin >> w[i];
+    }
+    for (int i = 0; i < n; i++) {
+        cout << w[i];
+    }
+    int p;
+    cin >> p;
+    Proces_penal* x = new Proces_penal[n];
+    for (int i = 0; i < n; i++) {
+        cin >> x[i];
+    }
+    for (int i = 0; i < n; i++) {
+        cout << x[i];
+    }
 }
 
 
